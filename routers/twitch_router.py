@@ -1,15 +1,20 @@
 from fastapi import APIRouter
 from fastapi_pagination import Page, add_pagination, paginate
+from fastapi_pagination.ext.pymongo import paginate
+from schemas.twitch_schema import StreamSchema
+from get_database import database
+
 
 router = APIRouter(prefix='/twitch', tags=['twitch', ])
 
 
-@router.get('/')
+@router.get('/', response_model=Page[StreamSchema])
 def list_of_objs():
     """
     Return all twitch objects in a database
     """
-    return {'message': 'A list of objects'}
+    streams = database.streams
+    return paginate(streams)
 
 
 @router.get('/{id}')
