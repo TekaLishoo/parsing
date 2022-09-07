@@ -1,8 +1,8 @@
 import asyncio
 from fastapi import FastAPI
 from routers import lamoda_router, twitch_router
-from parsing_scripts.lamoda_parser import lamoda_parser
-from parsing_scripts.twitch_parser import twitch_parser
+from parsing_scripts.lamoda_parser import LamodaParser
+from parsing_scripts.twitch_parser import TwitchParser
 import asyncio
 import os
 from fastapi_pagination import Page, add_pagination
@@ -22,7 +22,7 @@ async def startup_event():
 @app.get('/parsing')
 async def pars_lamoda():
     loop = asyncio.get_event_loop()
-    tasks = [asyncio.create_task(lamoda_parser())]
+    tasks = [asyncio.create_task(LamodaParser().parse())]
     tasks = asyncio.gather(*tasks)
     loop.run_until_complete(tasks)
 

@@ -4,31 +4,22 @@ import requests
 import asyncio
 import aiohttp
 from bs4 import BeautifulSoup
+from parsing_scripts.base_parser import AbstractParser
 
 
-HEADERS = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
-    }
+class LamodaParser(AbstractParser):
+    BASE_URL = "https://lamoda.by"
 
-
-async def get_soup(url):
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url, headers=HEADERS) as page:
-            soup = BeautifulSoup(await page.text(), "lxml")
-            return soup
-
-
-async def lamoda_parser():
-    url = 'https://www.lamoda.by'
-    soup = await get_soup(url)
-    a_list = soup.find_all('a', attrs={'class': 'x-footer-seo-menu-tab-links__item'})
-    visited_products = set()
-    for a in a_list:
-        actual_url = url + a.attrs['href']
-        actual_soup = await get_soup(actual_url)
-        actual_a_list = actual_soup.find_all('a', attrs={'class': 'x-product-card__link'})
-        for i in actual_a_list:
-            print(f'{i.get_text()}')
+    async def parse(self):
+        soup = await self.get_soup(self.BASE_URL)
+        a_list = soup.find_all('a', attrs={'class': 'x-footer-seo-menu-tab-links__item'})
+        visited_products = set()
+        for a in a_list:
+            actual_url = self.BASE_URL + a.attrs['href']
+            actual_soup = await self.get_soup(actual_url)
+            actual_a_list = actual_soup.find_all('a', attrs={'class': 'x-product-card__link'})
+            for i in actual_a_list:
+                print(f'{i.get_text()}')
 
 
     # producer = KafkaProducer(retries=5, bootstrap_servers=['kafka:9092'],
