@@ -1,8 +1,8 @@
 from fastapi import APIRouter
-from fastapi_pagination import Page, add_pagination, paginate
+from fastapi_pagination import Page, paginate
 from fastapi_pagination.ext.pymongo import paginate
 from schemas.twitch_schema import StreamSchema
-from get_database import database
+from db.get_database import database
 
 
 router = APIRouter(prefix='/twitch', tags=['twitch', ])

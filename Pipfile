@@ -20,6 +20,7 @@ chromedriver-autoinstaller = "*"
 lxml = "*"
 aiohttp = "*"
 fastapi-pagination = "*"
+python-dotenv = "*"
 
 [dev-packages]
 

@@ -1,9 +1,8 @@
 from fastapi import APIRouter
-from get_database import database
+from db.get_database import database
 from schemas.lamoda_schema import ProductSchema
-from fastapi_pagination import Page, add_pagination, paginate
+from fastapi_pagination import Page, paginate
 from fastapi_pagination.ext.pymongo import paginate
-from datetime import datetime
 
 router = APIRouter(prefix='/lamoda', tags=['lamoda', ])
 
