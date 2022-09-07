@@ -22,21 +22,4 @@ class LamodaParser(AbstractParser):
                 print(f'{i.get_text()}')
 
 
-    # producer = KafkaProducer(retries=5, bootstrap_servers=['kafka:9092'],
-    #                          value_serializer=lambda x: dumps(x).encode('utf-8'))
-    # d = producer.send('topic_test', value={'counter': '5'})
-    # data = d.get()
-    # print(f'send {data.topic}')
-    #
-    # consumer = KafkaConsumer(
-    #     'topic_test',
-    #     bootstrap_servers=['kafka:9092'],
-    #     auto_offset_reset='earliest',
-    #     enable_auto_commit=True,
-    #     group_id='my-group-id',
-    #     value_deserializer=lambda x: loads(x.decode('utf-8'))
-    # )
-    # for event in consumer:
-    #     event_data = event.value
-    #     # Do whatever you want
-    #     print(f'received {event_data}')
+
