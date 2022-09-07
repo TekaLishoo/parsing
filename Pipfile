@@ -4,6 +4,22 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+fastapi = "*"
+pymongo = "*"
+unicorn = "*"
+black = "*"
+flake8 = "*"
+pytest = "*"
+uvicorn = "*"
+asyncio = "*"
+kafka-python = "*"
+beautifulsoup4 = "*"
+requests = "*"
+selenium = "*"
+chromedriver-autoinstaller = "*"
+lxml = "*"
+aiohttp = "*"
+fastapi-pagination = "*"
 
 [dev-packages]
 
