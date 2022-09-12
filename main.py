@@ -6,24 +6,18 @@ from parsing_scripts.twitch_parser import TwitchParser
 import asyncio
 import os
 from fastapi_pagination import Page, add_pagination
+from parsing_scripts.run_parser import run
+from kq import Queue
+from kafka import KafkaProducer
+from json import dumps
 
 app = FastAPI()
 app.include_router(lamoda_router.router)
 app.include_router(twitch_router.router)
 
 
-@app.on_event("startup")
-async def startup_event():
-    pass
-    # lamoda_parser.lamoda_parser()
-    # twitch_parser.twitch_parser()
-
-
 @app.get('/parsing')
-async def pars_lamoda():
-    loop = asyncio.get_event_loop()
-    tasks = [asyncio.create_task(LamodaParser().parse())]
-    tasks = asyncio.gather(*tasks)
-    loop.run_until_complete(tasks)
+async def parsing():
+    run()
 
 add_pagination(app)

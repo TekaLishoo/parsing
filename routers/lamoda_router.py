@@ -1,8 +1,9 @@
 from fastapi import APIRouter
-from db.get_database import database
 from schemas.lamoda_schema import ProductSchema
 from fastapi_pagination import Page, paginate
 from fastapi_pagination.ext.pymongo import paginate
+from dao.container_mongo import ContainerMongo
+
 
 router = APIRouter(prefix='/lamoda', tags=['lamoda', ])
 
@@ -21,7 +22,8 @@ def get_products():
         price=230.1,
         descroption={'color': 'red', 'material': 'cotton'}
     )
-    products = database.products
+    database = ContainerMongo().mongo
+    products = database().products
     products.insert_one(product.dict())
     return paginate(products)
 
