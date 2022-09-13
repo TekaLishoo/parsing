@@ -7,11 +7,11 @@ from dao.container_mongo import ContainerMongo
 
 async def run():
     asyncio.get_event_loop()
-    k = Kafka()
+    kafka = Kafka()
     mongo = ContainerMongo()
     tasks = [
-        asyncio.create_task(LamodaParser().parse(k, mongo)),
-        asyncio.create_task(TwitchParser().parse(k, mongo)),
+        asyncio.create_task(LamodaParser(kafka, mongo).parse()),
+        asyncio.create_task(TwitchParser(kafka, mongo).parse()),
     ]
     asyncio.gather(*tasks)
 

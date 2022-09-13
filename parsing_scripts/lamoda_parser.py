@@ -18,7 +18,11 @@ class LamodaParser(AbstractParser):
     prod_description_attr_class = 'x-premium-product-description-attribute__name'
     prod_description_value_class = 'x-premium-product-description-attribute__value'
 
-    async def parse(self, k: Kafka, mongo: ContainerMongo):
+    def __init__(self, kafka: Kafka, mongo: ContainerMongo):
+        self.kafka = kafka
+        self.mongo = mongo
+
+    async def parse(self):
         soup = await self.get_soup(self.BASE_URL)
 
         # find all links with product categories
@@ -35,7 +39,7 @@ class LamodaParser(AbstractParser):
             actual_a_list = actual_soup.find_all('a', attrs={'class': self.product_class})
             for prod in actual_a_list[:10]:  # slice is for test version
                 product_url = self.BASE_URL + prod.attrs['href']
-                if not(product_url in visited_products):
+                if not (product_url in visited_products):
                     visited_products.add(product_url)
 
                     product_soup = await self.get_soup(product_url)
@@ -73,14 +77,7 @@ class LamodaParser(AbstractParser):
                         'description': description
                     }
 
-                    d = k.producer.send('topic_lamoda', value=product_data)
+                    d = self.kafka.producer.send('topic_lamoda', value=product_data)
                     print(f'send {product_data}')
 
-        await mongo.send_lamoda_data(k.consumer_lamoda)
-
-
-
-
-
-
-
+        await self.mongo.send_lamoda_data(self.kafka.consumer_lamoda)

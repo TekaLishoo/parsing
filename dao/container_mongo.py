@@ -33,5 +33,7 @@ class ContainerMongo:
 
     def get_list_lamoda_products(self):
         products = self.mongo.client.products
-        print(products)
         return paginate(products)
+
+    def get_list_twitch_streams(self):
+        pass

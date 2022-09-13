@@ -1,22 +1,18 @@
-from fastapi import APIRouter
-from fastapi_pagination import Page, paginate
-from fastapi_pagination.ext.pymongo import paginate
+from fastapi import APIRouter, Depends
+from fastapi_pagination import Page
 from schemas.twitch_schema import StreamSchema
-from db.get_database import Mongo
-import os
+from dao.container_mongo import ContainerMongo
 
 
 router = APIRouter(prefix='/twitch', tags=['twitch', ])
 
 
 @router.get('/', response_model=Page[StreamSchema])
-def list_of_objs():
+def list_of_objs(mongo=Depends(ContainerMongo)):
     """
     Return all twitch objects in a database
     """
-    client = Mongo(os.environ['MONGO_USER'], os.environ['MONGO_PASS'], os.environ['MONGO_DB'])
-    streams = client().streams
-    return paginate(streams)
+    return mongo.get_list_twitch_streams()
 
 
 @router.get('/{id}')
