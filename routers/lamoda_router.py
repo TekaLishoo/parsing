@@ -1,30 +1,18 @@
-from fastapi import APIRouter
-from get_database import database
+from fastapi import APIRouter, Depends
 from schemas.lamoda_schema import ProductSchema
-from fastapi_pagination import Page, add_pagination, paginate
-from fastapi_pagination.ext.pymongo import paginate
-from datetime import datetime
+from fastapi_pagination import Page
+from dao.container_mongo import ContainerMongo
+
 
 router = APIRouter(prefix='/lamoda', tags=['lamoda', ])
 
 
 @router.get('/', response_model=Page[ProductSchema])
-def get_products():
+def get_products(mongo=Depends(ContainerMongo)):
     """
     Return all lamoda products in a database
     """
-
-    # example product - will be removed
-    product = ProductSchema(
-        category='home',
-        brand='Zara',
-        name='pillow',
-        price=230.1,
-        descroption={'color': 'red', 'material': 'cotton'}
-    )
-    products = database.products
-    products.insert_one(product.dict())
-    return paginate(products)
+    return mongo.get_list_lamoda_products()
 
 
 @router.get('/{category}')

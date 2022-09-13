@@ -34,7 +34,6 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_MESSAGE_MAX_BYTES: 10485760
       KAFKA_SOCKET_REQUEST_MAX_BYTES: 100001200
-      KAFKA_CREATE_TOPICS: "topic_test:1:1"
     restart: always
 
   zookeeper:
@@ -49,10 +48,8 @@ services:
       - kafka
     command: |
       bash -c '/wait-for-it.sh --timeout=0 -s kafka:9092 && \
-      kafka-topics --create --if-not-exists --topic src-data --partitions 8 --replication-factor 1 --zookeeper zookeeper:2181 && \
-      kafka-topics --create --if-not-exists --topic processed-data --partitions 8 --replication-factor 1 --zookeeper zookeeper:2181 && \
-      kafka-topics --create --if-not-exists --topic aggregated-data --partitions 8 --replication-factor 1 --zookeeper zookeeper:2181 && \
-      exit 0'
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic topic_lamoda --replication-factor 1 --partitions 1 && \
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic topic_twitch --replication-factor 1 --partitions 1'
     environment:
       KAFKA_BROKER_ID: ignored
       KAFKA_ZOOKEEPER_CONNECT: ignored
