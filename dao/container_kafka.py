@@ -14,6 +14,8 @@ class Kafka:
             bootstrap_servers=['kafka:9092'],
             auto_offset_reset='earliest',
             enable_auto_commit=True,
+            consumer_timeout_ms=2000,
+            heartbeat_interval_ms=200,
             group_id='1',
             value_deserializer=lambda x: loads(x.decode('utf-8'))
         )
@@ -22,22 +24,13 @@ class Kafka:
             bootstrap_servers=['kafka:9092'],
             auto_offset_reset='earliest',
             enable_auto_commit=True,
-            group_id='2',
+            consumer_timeout_ms=2000,
+            heartbeat_interval_ms=200,
+            group_id='1',
             value_deserializer=lambda x: loads(x.decode('utf-8'))
         )
 
         self.consumer_lamoda.subscribe(topics=['topic_lamoda'])
         self.consumer_twitch.subscribe(topics=['topic_twitch'])
 
-    async def send_lamoda_data(self):
-        for event in self.consumer_lamoda:
-            event_data = event.value
-            print(f'received {event_data}')
-            return event_data
-
-    async def send_twitch_data(self):
-        for event in self.consumer_twitch:
-            event_data = event.value
-            print(f'received {event_data}')
-            return event_data
 

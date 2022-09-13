@@ -14,18 +14,9 @@ def get_products():
     Return all lamoda products in a database
     """
 
-    # example product - will be removed
-    product = ProductSchema(
-        category='home',
-        brand='Zara',
-        name='pillow',
-        price=230.1,
-        descroption={'color': 'red', 'material': 'cotton'}
-    )
     database = ContainerMongo().mongo
-    products = database().products
-    products.insert_one(product.dict())
-    return paginate(products)
+    products = database.client.products
+    return ContainerMongo().get_list_lamoda_products()
 
 
 @router.get('/{category}')

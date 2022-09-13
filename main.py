@@ -18,6 +18,6 @@ app.include_router(twitch_router.router)
 
 @app.get('/parsing')
 async def parsing():
-    run()
+    await run()
 
 add_pagination(app)
