@@ -11,6 +11,7 @@ class Mongo:
         self.password = password
         self.db = db
         self.client = MongoClient(
-            'mongodb://mongodb:27017/?authSource=admin&readPreference=secondary&directConnection=true&ssl=false',
+            "mongodb://mongodb:27017/?authSource=admin&readPreference=secondary&directConnection=true&ssl=false",
             username=self.user,
-            password=self.password).fastapi
+            password=self.password,
+        ).fastapi

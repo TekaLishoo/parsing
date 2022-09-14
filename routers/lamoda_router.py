@@ -4,10 +4,15 @@ from fastapi_pagination import Page
 from dao.container_mongo import ContainerMongo
 
 
-router = APIRouter(prefix='/lamoda', tags=['lamoda', ])
+router = APIRouter(
+    prefix="/lamoda",
+    tags=[
+        "lamoda",
+    ],
+)
 
 
-@router.get('/', response_model=Page[ProductSchema])
+@router.get("/", response_model=Page[ProductSchema])
 def get_products(mongo=Depends(ContainerMongo)):
     """
     Return all lamoda products in a database
@@ -15,19 +20,17 @@ def get_products(mongo=Depends(ContainerMongo)):
     return mongo.get_list_lamoda_products()
 
 
-@router.get('/{category}')
+@router.get("/{category}")
 def prods_by_category(category: str):
     """
     Return all products in a particular category
     """
-    return {'message': f'A list of products in the category {category}'}
+    return {"message": f"A list of products in the category {category}"}
 
 
-@router.get('/{id}')
+@router.get("/{id}")
 def one_prod(id: int):
     """
     Return a product with a given id
     """
-    return {'message': f'A product with id {id}'}
-
-
+    return {"message": f"A product with id {id}"}
