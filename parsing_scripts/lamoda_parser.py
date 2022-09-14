@@ -31,7 +31,7 @@ class LamodaParser(AbstractParser):
         # in case of one product can be in several categories we'll store visited product's links
         # to be sure not to visit one product twice
         visited_products = set()
-        for a in a_list[:10]:  # slice is for test version
+        for a in a_list[:5]:  # slice is for test version
             actual_url = self.BASE_URL + a.attrs["href"]
             actual_soup = await self.get_soup(actual_url)
 
@@ -39,7 +39,7 @@ class LamodaParser(AbstractParser):
             actual_a_list = actual_soup.find_all(
                 "a", attrs={"class": self.product_class}
             )
-            for prod in actual_a_list[:10]:  # slice is for test version
+            for prod in actual_a_list[:5]:  # slice is for test version
                 product_url = self.BASE_URL + prod.attrs["href"]
                 if not (product_url in visited_products):
                     visited_products.add(product_url)

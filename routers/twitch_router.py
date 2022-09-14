@@ -20,9 +20,9 @@ def list_of_objs(mongo=Depends(ContainerMongo)):
     return mongo.get_list_twitch_streams()
 
 
-@router.get("/{id}")
-def one_obj(id: int):
+@router.get("/id/{id}")
+def one_obj(id: str, mongo=Depends(ContainerMongo)):
     """
     Return an object with a given id
     """
-    return {"message": f"An object with id {id}"}
+    return mongo.get_by_id(id)

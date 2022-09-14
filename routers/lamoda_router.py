@@ -20,17 +20,17 @@ def get_products(mongo=Depends(ContainerMongo)):
     return mongo.get_list_lamoda_products()
 
 
-@router.get("/{category}")
-def prods_by_category(category: str):
-    """
-    Return all products in a particular category
-    """
-    return {"message": f"A list of products in the category {category}"}
-
-
-@router.get("/{id}")
-def one_prod(id: int):
+@router.get("/id/{id}")
+def one_prod(id: str, mongo=Depends(ContainerMongo)):
     """
     Return a product with a given id
     """
-    return {"message": f"A product with id {id}"}
+    return mongo.get_by_id(id)
+
+
+@router.get("/{brand}", response_model=Page[ProductSchema])
+def prods_by_brand(brand: str, mongo=Depends(ContainerMongo)):
+    """
+    Return all products of a particular brand.
+    """
+    return mongo.get_lamoda_brand(brand)

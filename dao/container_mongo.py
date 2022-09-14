@@ -1,9 +1,11 @@
 from fastapi_pagination.ext.pymongo import paginate
+from fastapi_pagination import paginate as list_paginate
 from db.get_database import Mongo
 from di.controller_general import ControllerGeneral
 from config.config import Settings
 from kafka import KafkaConsumer
 from fastapi import HTTPException
+from bson.objectid import ObjectId
 
 
 class ContainerMongo:
@@ -54,3 +56,33 @@ class ContainerMongo:
                 "There are no products in a database. Please run a parsing firstly."
             )
         return paginate(streams)
+
+    def get_by_id(self, id: str):
+        if len(id) == 24:
+            products = self.mongo.client.products
+            search = products.find_one({"_id": ObjectId(id)})
+            if not search:
+                self.db_exception("There is no data with such an id in the database.")
+            search["_id"] = str(search["_id"])
+            return search
+        else:
+            self.db_exception("Invalid id value. Please, enter a 12-byte value.")
+
+    def get_lamoda_brand(self, brand: str):
+        products = self.mongo.client.products
+        search = list(
+            products.find(
+                {"brand": brand},
+                projection={
+                    "_id": False,
+                    "category": True,
+                    "brand": True,
+                    "name": True,
+                    "price": True,
+                    "description": True,
+                },
+            )
+        )
+        if len(search) == 0:
+            self.db_exception(f"There are no datas with such a brand {brand}")
+        return list_paginate(search)
