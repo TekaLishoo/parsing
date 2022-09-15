@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends
 from schemas.lamoda_schema import ProductSchema
 from fastapi_pagination import Page
 from dao.container_mongo import ContainerMongo
+from fastapi_redis_cache import cache
 
 
 router = APIRouter(
@@ -13,6 +14,7 @@ router = APIRouter(
 
 
 @router.get("/", response_model=Page[ProductSchema])
+@cache()
 def get_products(mongo=Depends(ContainerMongo)):
     """
     Return all lamoda products in a database
@@ -21,6 +23,7 @@ def get_products(mongo=Depends(ContainerMongo)):
 
 
 @router.get("/id/{id}")
+@cache()
 def one_prod(id: str, mongo=Depends(ContainerMongo)):
     """
     Return a product with a given id
@@ -29,6 +32,7 @@ def one_prod(id: str, mongo=Depends(ContainerMongo)):
 
 
 @router.get("/{brand}", response_model=Page[ProductSchema])
+@cache()
 def prods_by_brand(brand: str, mongo=Depends(ContainerMongo)):
     """
     Return all products of a particular brand.

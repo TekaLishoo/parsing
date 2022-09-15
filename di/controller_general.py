@@ -9,3 +9,5 @@ class ControllerGeneral:
 
         self.client_id = actual_settings.TWITCH_CLIENT_ID
         self.secret_key = actual_settings.TWITCH_SECRET_KEY
+
+        self.redis_url = actual_settings.REDIS_URL

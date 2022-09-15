@@ -23,6 +23,7 @@ fastapi-pagination = "*"
 python-dotenv = "*"
 kq = "*"
 grequests = "*"
+fastapi-redis-cache = "*"
 
 [dev-packages]
 

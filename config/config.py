@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     MONGO_DB: str
     TWITCH_CLIENT_ID: str
     TWITCH_SECRET_KEY: str
+    REDIS_URL: str
 
     class Config:
         env_file = ".env"
