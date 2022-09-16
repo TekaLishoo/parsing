@@ -84,5 +84,5 @@ class ContainerMongo:
             )
         )
         if len(search) == 0:
-            self.db_exception(f"There are no datas with such a brand {brand}")
+            self.db_exception(f"There are no datas with a brand {brand}")
         return list_paginate(search)
