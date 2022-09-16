@@ -3,7 +3,6 @@ from fastapi_pagination import Page
 from schemas.twitch_schema import StreamSchema
 from dao.container_mongo import ContainerMongo
 from fastapi_redis_cache import cache
-from fastapi.encoders import jsonable_encoder
 
 
 router = APIRouter(

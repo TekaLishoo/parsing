@@ -6,7 +6,7 @@ from fastapi import APIRouter
 from fastapi_pagination import Page
 
 
-class ContainerRedisCash:
+class RedisCash:
     """
     Redis object is for storing cache.
     """
