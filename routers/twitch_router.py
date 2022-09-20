@@ -2,12 +2,19 @@ from fastapi import APIRouter, Depends
 from fastapi_pagination import Page
 from schemas.twitch_schema import StreamSchema
 from dao.container_mongo import ContainerMongo
+from fastapi_redis_cache import cache
 
 
-router = APIRouter(prefix='/twitch', tags=['twitch', ])
+router = APIRouter(
+    prefix="/twitch",
+    tags=[
+        "twitch",
+    ],
+)
 
 
-@router.get('/', response_model=Page[StreamSchema])
+@router.get("/", response_model=Page[StreamSchema])
+@cache()
 def list_of_objs(mongo=Depends(ContainerMongo)):
     """
     Return all twitch objects in a database
@@ -15,9 +22,10 @@ def list_of_objs(mongo=Depends(ContainerMongo)):
     return mongo.get_list_twitch_streams()
 
 
-@router.get('/{id}')
-def one_obj(id: int):
+@router.get("/id/{id}")
+@cache()
+def one_obj(id: str, mongo=Depends(ContainerMongo)):
     """
     Return an object with a given id
     """
-    return {'message': f'An object with id {id}'}
+    return mongo.get_by_id(id)

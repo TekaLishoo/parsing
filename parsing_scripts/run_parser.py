@@ -14,4 +14,3 @@ async def run():
         asyncio.create_task(TwitchParser(kafka, mongo).parse()),
     ]
     asyncio.gather(*tasks)
-
